@@ -14,11 +14,11 @@ class Joystick
 public:
   enum axis_t
   {
-    eYaw = 0,
-    eThrottle = 1,
-    eAux = 2,
-    eRoll = 4,
-    ePitch = 5
+    eYaw = 4,
+    eThrottle = 2,
+    eAux = 3,
+    eRoll = 0,
+    ePitch = 1
   };
   Joystick();
   Joystick(const char *device);

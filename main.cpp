@@ -1,4 +1,11 @@
 // Written by Stefan Schmidt 2019
+
+// use jstest-gtk
+// jscal -t /dev/input/js0
+// sudo jscal-store /dev/input/js0
+// jscal-restore
+// /var/lib/joystick/joystick.state
+
 #include <stdio.h>
 #include "Joystick.h"
 #include "Msp.h"
@@ -12,24 +19,29 @@
 #include <boost/exception/all.hpp>
 #include <exception>
 
+#define JOYSTICK_DEVICE "/dev/input/js0"
 #define RC_UPDATE_SLEEP_MS 20
 #define NAZE_IP "127.0.0.1"
 #define NAZE_PORT 5761
 
 
-void joystick_thread(Joystick *js)
+void joystick_thread(Joystick *js, bool debug)
 {
     printf("axis: %i, buttons: %i\n", js->get_axis_count(), js->get_button_count());
     while (js->update())
     {
-        //js->print_state();
+        if (debug) 
+        {
+            js->print_state();
+        }
     }
 }
 
 int main(int argc, char *argv[])
 {
-    Joystick js("/dev/input/js0");
-    std::thread t1(joystick_thread, &js);
+    bool debug = (argc != 1);
+    Joystick js(JOYSTICK_DEVICE);
+    std::thread t1(joystick_thread, &js, debug);
 
     boost::asio::io_service ios;
     boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(NAZE_IP), NAZE_PORT);
