@@ -1,0 +1,12 @@
+cmake_minimum_required (VERSION 2.6)
+PROJECT (msp_joystick)
+
+FIND_PACKAGE (Threads)
+FIND_PACKAGE (Boost 1.55. COMPONENTS system filesystem REQUIRED )
+
+INCLUDE_DIRECTORIES (${Boost_INCLUDE_DIR})
+
+ADD_EXECUTABLE (${PROJECT_NAME} main.cpp Joystick.cpp Msp.cpp)
+
+TARGET_LINK_LIBRARIES (${PROJECT_NAME} LINK_PUBLIC ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
+
